@@ -11,26 +11,27 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.TejasMatal.OnlineCourse.dto.AdminDto;
-import com.TejasMatal.OnlineCourse.service.Adminservice;
+import com.TejasMatal.OnlineCourse.service.StudentService;
 
 @CrossOrigin
 @RestController
-@RequestMapping("AdminApli")
-public class AdminApi {
+@RequestMapping("StudentApi")
+public class StudentApi {
 	
 	@Autowired
-	private Adminservice adminservice;
-
-	@RequestMapping(value = "/getAdmin/{adminId}", method = RequestMethod.GET)
-	public ResponseEntity<AdminDto> getBooking(@PathVariable int adminId){
+	private StudentService studentService;
+	 
+	@RequestMapping(value ="/getstudent/{ContactNumber}", method = RequestMethod.GET)
+	public ResponseEntity<String> getBooking(@PathVariable String ContactNumber){
 		try {
-			System.out.println(adminId);
-			AdminDto adminDto = adminservice.getadmin();
 			
-			return new ResponseEntity<AdminDto>(adminDto, HttpStatus.OK);
+			String result = studentService.authenticate(ContactNumber);
+			
+			return new ResponseEntity<String>(result, HttpStatus.OK);
 			
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "");
 		}
 	}
+
 }
