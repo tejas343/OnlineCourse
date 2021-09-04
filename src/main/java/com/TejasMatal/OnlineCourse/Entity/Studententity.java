@@ -47,6 +47,12 @@ public class Studententity {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	@Override
+	public String toString() {
+		return "Studententity [studentId=" + studentId + ", studentName=" + studentName + ", contactNumber="
+				+ contactNumber + ", emailId=" + emailId + ", password=" + password + "]";
+	}
+	
 	
 	
 	
