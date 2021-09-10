@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.TejasMatal.OnlineCourse.dto.Studentdto;
+
 import com.TejasMatal.OnlineCourse.dto.Teacherdto;
 import com.TejasMatal.OnlineCourse.service.TeacherService;
 
@@ -25,12 +25,12 @@ public class TeacherApi {
 	private TeacherService teacherService;
 	
 	@RequestMapping(value ="/authenticate_teacher/", method = RequestMethod.POST)
-	public ResponseEntity<String> getBooking(@RequestBody Teacherdto teacher ){
+	public ResponseEntity<Teacherdto> getBooking(@RequestBody Teacherdto teacher ){
 		try {
 			
-			String result = teacherService.authenticate(teacher.getContactNo(),teacher.getPassword());
+			Teacherdto result = teacherService.authenticate(teacher.getContactNo(),teacher.getPassword());
 			
-			return new ResponseEntity<String>(result, HttpStatus.OK);
+			return new ResponseEntity<Teacherdto>(result, HttpStatus.OK);
 			
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());

@@ -24,12 +24,14 @@ public class StudentApi {
 	private StudentService studentService;
 	 
 	@RequestMapping(value ="/authenticate_student/", method = RequestMethod.POST)
-	public ResponseEntity<String> authenticateStudent(@RequestBody Studentdto student){
+	public ResponseEntity<Studentdto> authenticateStudent(@RequestBody Studentdto student){
 		try {
+			System.out.println(student.getContactNumber());
+			System.out.println(student.getPassword());
 			
-			String result = studentService.authenticate(student.getContactNumber(), student.getPassword());
+			Studentdto result = studentService.authenticate(student.getContactNumber(), student.getPassword());
 			
-			return new ResponseEntity<String>(result, HttpStatus.OK);
+			return new ResponseEntity<Studentdto>(result, HttpStatus.OK);
 			
 		} catch (Exception e) {
 			throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());

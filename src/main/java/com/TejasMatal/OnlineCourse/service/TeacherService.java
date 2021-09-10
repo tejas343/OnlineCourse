@@ -17,11 +17,12 @@ public class TeacherService {
 	@Autowired 
 	private TeacherRepos teacherRepos;
 	
-	public String authenticate(String contactNumber , String password)throws Exception {
+	public Teacherdto authenticate(String contactNumber , String password)throws Exception {
 		
 		List<Teacherentity> teacherList = teacherRepos.findByContactNumber(contactNumber);
 		System.out.println(teacherList);
 		System.out.println(password);
+		
 		if(teacherList.isEmpty()) {
 			throw new Exception("Invalid contact number or password");
 		}
@@ -31,7 +32,13 @@ public class TeacherService {
 			throw new Exception("Invalid contact number or password");
 		}
 		
-		return "sucess";
+		Teacherdto teacherDto = new Teacherdto();
+		teacherDto.setTeacherId(teacherList.get(0).getTeacherId());
+		teacherDto.setContactNo(contactNumber);
+		teacherDto.setEmailId(teacherList.get(0).getEmailId());
+		teacherDto.setTeacherName(teacherList.get(0).getTeacherName());
+		
+		return teacherDto;
     }
    public String registerTeacher(Teacherdto teacherDto) throws Exception{
 		
@@ -52,6 +59,6 @@ public class TeacherService {
 		
 		teacherRepos.save(teacher);
 		
-		return "teacher registered successfully with Sutdent Id : " +teacher.getTeacherId();
+		return "teacher registered successfully with Teacher Id : " +teacher.getTeacherId();
 	}
 }

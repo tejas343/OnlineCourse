@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.TejasMatal.OnlineCourse.Entity.Studententity;
 import com.TejasMatal.OnlineCourse.dto.Studentdto;
+import com.TejasMatal.OnlineCourse.dto.Teacherdto;
 import com.TejasMatal.OnlineCourse.repos.StudentRepos;
 
 @Service(value = "studentService")
@@ -15,7 +16,7 @@ public class StudentService {
 	@Autowired
 	private StudentRepos studentrepos;
 	
-	public String authenticate(String contactNumber, String password) throws Exception {
+	public Studentdto authenticate(String contactNumber, String password) throws Exception {
 		
 		List<Studententity> studentList = studentrepos.findByContactNumber(contactNumber);
 		System.out.println(studentList);
@@ -28,7 +29,18 @@ public class StudentService {
 		if(!passwordFromDb.equals(password)) {
 			throw new Exception("Invalid contact number or password");
 		}
-		return "Success";
+		 
+			
+			if(!passwordFromDb.equals(password)) {
+			throw new Exception("Invalid contact number or password");
+	}
+			Studentdto studentDto = new Studentdto();
+			studentDto.setStudentId(studentList.get(0).getStudentId());
+			studentDto.setContactNumber(contactNumber);
+			studentDto.setEmailId(studentList.get(0).getEmailId());
+			studentDto.setStudentName(studentList.get(0).getStudentName());
+			
+			return studentDto;
 	}
 	
 	public String registerStudent(Studentdto studentDto) throws Exception{
