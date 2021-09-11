@@ -1,5 +1,6 @@
 package com.TejasMatal.OnlineCourse.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,6 +47,34 @@ public class EnrollService {
 		enrollmentRepo.save(enroll);
 		
 		return "Successfully Enrolled";
+	}
+	
+	public List<CourseDto> findCourseOfStudent(int studentId) throws Exception {
+		
+		Optional<Studententity> optionalStudent = studentRepo.findById(studentId);
+		Studententity student = optionalStudent.orElseThrow(() -> new Exception("Student not found"));
+		
+		List<Enrollment> enrollmentList = enrollmentRepo.findByStudentId(student);
+		
+		if(enrollmentList.isEmpty()) throw new Exception("Not Enrolled for any course.");
+		
+		List<CourseDto> courseList = new ArrayList<CourseDto>();
+		
+		for(Enrollment element: enrollmentList) {
+			
+			CourseEntity course = element.getCouseId();
+			CourseDto courseDto = new CourseDto();
+			
+			courseDto.setCourseName(course.getCourseName());
+			courseDto.setDateTime(course.getDateTime());
+			courseDto.setEducatorName(course.getEducatorName());
+			courseDto.setImageUrl(course.getImageUrl());
+			
+			courseList.add(courseDto);
+						
+		}
+		
+		return courseList;
 	}
 
 }

@@ -17,4 +17,6 @@ public interface EnrollmentRepo extends CrudRepository<Enrollment, Integer> {
 
 	List<Enrollment> findByCouseIdAndStudentId(CourseEntity course, Studententity student);
 
+	List<Enrollment> findByStudentId(Studententity student);
+
 }

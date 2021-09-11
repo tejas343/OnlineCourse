@@ -87,4 +87,17 @@ public class CourseApi {
 		}
 	}
 	
+	@RequestMapping(value ="/getCoursesByTeacher/{teacherId}", method = RequestMethod.GET)
+	public ResponseEntity<List<CourseDto>> getCoursesByTeacher(@PathVariable int teacherId){
+		try {
+			
+			List<CourseDto> result = couseService.getByTeacher(teacherId);
+			
+			return new ResponseEntity<List<CourseDto>>(result, HttpStatus.OK);
+			
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+		}
+	}
+	
 }

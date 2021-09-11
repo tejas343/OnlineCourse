@@ -2,8 +2,10 @@ package com.TejasMatal.OnlineCourse.service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.transaction.Transactional;
 
@@ -11,8 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.TejasMatal.OnlineCourse.Entity.CourseEntity;
+import com.TejasMatal.OnlineCourse.Entity.Enrollment;
+import com.TejasMatal.OnlineCourse.Entity.Studententity;
 import com.TejasMatal.OnlineCourse.Entity.Teacherentity;
 import com.TejasMatal.OnlineCourse.dto.CourseDto;
+import com.TejasMatal.OnlineCourse.dto.EnrollDto;
 import com.TejasMatal.OnlineCourse.dto.Studentdto;
 import com.TejasMatal.OnlineCourse.dto.Teacherdto;
 import com.TejasMatal.OnlineCourse.repos.CourseRepo;
@@ -132,6 +137,58 @@ public class CouseService {
 		}
 		
 		return CourseList;
+	}
+	
+	public List<CourseDto> getByTeacher(int teacherId) throws Exception{
+		
+		Optional<Teacherentity> optionalTeacher = teacherRepo.findById(teacherId);
+		Teacherentity teacher = optionalTeacher.orElseThrow(() -> new Exception("Teacher not found"));
+		
+		List<CourseEntity> courseList = courseRepo.findByTeacher(teacher);
+		
+		List<CourseDto> courseDtoList = new ArrayList<>();
+		
+		if(courseList.isEmpty()) throw new Exception("There is no course created by you!");
+		
+		for(CourseEntity element: courseList) {
+			
+			CourseDto courseDto = new CourseDto();
+			
+			courseDto.setCourseId(element.getCourseId());
+			courseDto.setCourseName(element.getCourseName());
+			courseDto.setDateTime(element.getDateTime());
+			courseDto.setEducatorName(element.getEducatorName());
+			courseDto.setImageUrl(element.getImageUrl());
+			
+			Set<Enrollment> enrollSet = element.getListofenrollEnrollmententity();
+			Set<EnrollDto> enrollDtoSet = new HashSet<>();
+			
+			for(Enrollment enrollElement: enrollSet) {
+				
+				EnrollDto enrollDto = new EnrollDto();
+				
+				Studententity student = enrollElement.getStudentId();
+				Studentdto studentDto = new Studentdto();
+				
+				studentDto.setStudentId(student.getStudentId());
+				studentDto.setStudentName(student.getStudentName());
+				studentDto.setContactNumber(student.getContactNumber());
+				studentDto.setEmailId(student.getEmailId());
+				
+				enrollDto.setStudentDto(studentDto);
+				
+				
+				enrollDtoSet.add(enrollDto);
+				
+			}
+			
+			
+			courseDto.setEnrollmentlist(enrollDtoSet);
+			
+			courseDtoList.add(courseDto);
+		}
+		
+		return courseDtoList;
 	}
 	
 }

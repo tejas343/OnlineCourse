@@ -1,6 +1,7 @@
 package com.TejasMatal.OnlineCourse.Entity;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -10,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 
@@ -33,6 +35,19 @@ public class CourseEntity {
 	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "CREATED_BY")
     private Teacherentity teacher;
+	
+	public Set<Enrollment> getListofenrollEnrollmententity() {
+		return listofenrollEnrollmententity;
+	}
+
+	public void setListofenrollEnrollmententity(Set<Enrollment> listofenrollEnrollmententity) {
+		this.listofenrollEnrollmententity = listofenrollEnrollmententity;
+	}
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "COURSE_ID")
+	private Set<Enrollment> listofenrollEnrollmententity;
+	
 
 	public int getCourseId() {
 		return courseId;

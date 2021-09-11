@@ -1,6 +1,7 @@
 package com.TejasMatal.OnlineCourse.dto;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
@@ -29,6 +30,17 @@ public class CourseDto {
     
 	@NotNull(message = "Teacher Details required")
     private Teacherdto teacherDto;
+    
+	private Set<EnrollDto> enrollmentlist;
+	
+	
+	public Set<EnrollDto> getEnrollmentlist() {
+		return enrollmentlist;
+	}
+
+	public void setEnrollmentlist(Set<EnrollDto> enrollmentlist) {
+		this.enrollmentlist = enrollmentlist;
+	}
 
 	public int getCourseId() {
 		return courseId;
